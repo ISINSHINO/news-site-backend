@@ -71,11 +71,60 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
     'news_app',
     'rest_framework',
     'corsheaders',
     'rest_framework_simplejwt',
+
+    'debug_toolbar',
+    'dj_rest_auth',
+    "dj_rest_auth.registration",
+    'rest_framework.authtoken',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google'
 ]
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend'
+]
+REST_USE_JWT = TRUE
+SITE_ID = 2
+SOCIALACCOUNT_EMAIL_VERIFICATION = "none"
+SOCIALACCOUNT_EMAIL_REQUIRED = False
+
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        "app": {
+          'client_id': "371672465150-jkp80f2cuolsejvbt1g0h2721cen0eps.apps.googleusercontent.com",
+          'secret': "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"
+        },
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+        }
+    }
+}
+
+INTERNAL_IPS = [
+    '127.0.0.1',
+    'localhost',
+    '192.168.0.1',
+    '95.174.114.171',
+    '10.0.2.2'
+]
+
+def show_toolbar(request):
+    return True
+DEBUG_TOOLBAR_CONFIG = {
+    "SHOW_TOOLBAR_CALLBACK" : show_toolbar,
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -87,11 +136,14 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
+    "debug_toolbar.middleware.DebugToolbarMiddleware"
 ]
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
+        "rest_framework.authentication.BasicAuthentication",
+        "rest_framework.authentication.SessionAuthentication",
     )
 }
 
